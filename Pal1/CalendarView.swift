@@ -109,6 +109,8 @@ class CalendarView: UIViewController {
             buttonYear.frame = CGRect(x: bigFrame.width/2+25.0, y: 10, width: 50, height: 40)
             buttonMonth.frame = CGRect(x: bigFrame.width/2-88.0, y: 10, width: 100, height: 40)
             buttonMonth.cornerRadius = 4
+            self.buttonMonth.isEnabled = true
+            self.buttonMonth.alpha = 1
             buttonMonth.backgroundColor = UIColor.darkGray
             buttonMonth.setTitle("\(months[monthSelect])", for: UIControlState.normal)
             buttonMonth.addTarget(self, action: #selector(buttonActionMonth), for: UIControlEvents.touchUpInside)
@@ -221,6 +223,8 @@ class CalendarView: UIViewController {
             labelDate.center = CGPoint(x: bigFrame.width/2-50.0, y: bigFrame.height/2)
             buttonYear.frame = CGRect(x: bigFrame.width/2, y: 10, width: 50, height: 40)
             buttonYear.cornerRadius = 4
+            buttonYear.isEnabled = true
+            buttonYear.alpha = 1
             buttonYear.backgroundColor = UIColor.darkGray
             buttonYear.setTitle("2017", for: UIControlState.normal)
             buttonYear.addTarget(self, action: #selector(buttonActionYear), for: UIControlEvents.touchUpInside)
@@ -269,6 +273,7 @@ class CalendarView: UIViewController {
                 }
             }
             
+            
             UIView.animate(withDuration: 0.5, animations: {
                 if(monthNum > 1){self.monthTraits[monthNum-2].frame = CGRect(x: frameBound.minX-20, y: 66, width: 1, height: 20)
                     self.monthLabel[monthNum-2].center = CGPoint(x: frameBound.minX-20, y: 95)}
@@ -304,12 +309,183 @@ class CalendarView: UIViewController {
     
     func buttonActionMonth(sender: UIButton!) {
         print("retour aux jours")
-        
+        if scale == "hour"{
+            scale = "day"
+            
+            let mid:CGFloat = CGFloat(daySelect-1)*100 + CGFloat(25)
+            let mid1 = mid - self.view.frame.width/2
+            
+            self.scrollView.contentOffset = CGPoint(x: mid1, y: 0)
+            
+            let frameBound = scrollView.bounds
+            
+            let daySep = daySelect-2
+            
+            if(daySep > 1){self.dayTraits[daySep-2].frame = CGRect(x: frameBound.minX-20, y: 66, width: 1, height: 20)
+                self.dayLabel[daySep-2].center = CGPoint(x: frameBound.minX-20, y: 95)}
+            if(daySep > 0){self.dayTraits[daySep-1].frame = CGRect(x: frameBound.minX-20, y: 66, width: 1, height: 20)
+                self.dayLabel[daySep-1].center = CGPoint(x: frameBound.minX-20, y: 95)}
+            self.dayTraits[daySep].frame = CGRect(x: frameBound.minX-20, y: 66, width: 1, height: 20)
+            self.dayLabel[daySep].center = CGPoint(x: frameBound.minX-20, y: 95)
+            if(daySep < 9){self.dayTraits[daySep+1].frame = CGRect(x: frameBound.maxX-20, y: 66, width: 1, height: 20)
+                self.dayLabel[daySep+1].center = CGPoint(x: frameBound.maxX-20, y: 95)}
+            if(daySep < 10){self.dayTraits[daySep+2].frame = CGRect(x: frameBound.maxX-20, y: 66, width: 1, height: 20)
+                self.dayLabel[daySep+2].center = CGPoint(x: frameBound.maxX-20, y: 95)}
+            
+            
+            UIView.animate(withDuration: 0.8, animations: {
+                for i in 0...30{
+                    self.dayTraits[i].frame = CGRect(x: i*100+25, y: 70, width: 1, height: 17)
+                    self.dayLabel[i].center = CGPoint(x: i*100+25, y: 95)
+                    self.dayTraits[i].alpha = 1
+                    self.dayLabel[i].alpha = 1
+                }
+                let yy = self.hourTraits[1].center.y
+                let yy2 = self.hourLabel[1].center.y
+                for i in 0...23{
+                    self.hourTraits[i].alpha = 0
+                    self.hourLabel[i].alpha = 0
+                    self.hourTraits[i].center = CGPoint(x: mid, y: yy)
+                    self.hourLabel[i].center = CGPoint(x: mid, y: yy2)
+                }
+                
+                let month:String = self.months[self.monthSelect]
+                self.labelDate.text = month
+                self.buttonMonth.isEnabled = false
+                self.buttonMonth.alpha = 0
+                self.labelDate.frame = CGRect(x: 0, y: 0, width: 100, height: 30)
+                self.labelDate.center = CGPoint(x: self.bigFrame.width/2-50.0, y: self.bigFrame.height/2)
+                self.buttonYear.frame = CGRect(x: self.bigFrame.width/2, y: 10, width: 50, height: 40)
+                
+            })
+        }
     }
     
     
     func buttonActionYear(sender: UIButton!) {
-        print("retour aux mois")
+        if scale == "day"{
+            scale = "month"
+            
+            let mid:CGFloat = CGFloat(monthSelect)*100 + CGFloat(25)
+            let mid1 = mid - self.view.frame.width/2
+            
+            self.scrollView.contentOffset = CGPoint(x: mid1, y: 0)
+            
+            let frameBound = scrollView.bounds
+            
+            let monthSep = monthSelect
+            
+            if(monthSep > 1){self.monthTraits[monthSep-2].frame = CGRect(x: frameBound.minX-20, y: 66, width: 1, height: 20)
+                self.monthLabel[monthSep-2].center = CGPoint(x: frameBound.minX-20, y: 95)}
+            if(monthSep > 0){self.monthTraits[monthSep-1].frame = CGRect(x: frameBound.minX-20, y: 66, width: 1, height: 20)
+                self.monthLabel[monthSep-1].center = CGPoint(x: frameBound.minX-20, y: 95)}
+            self.monthTraits[monthSep].frame = CGRect(x: frameBound.minX-20, y: 66, width: 1, height: 20)
+            self.monthLabel[monthSep].center = CGPoint(x: frameBound.minX-20, y: 95)
+            if(monthSep < 9){self.monthTraits[monthSep+1].frame = CGRect(x: frameBound.maxX-20, y: 66, width: 1, height: 20)
+                self.monthLabel[monthSep+1].center = CGPoint(x: frameBound.maxX-20, y: 95)}
+            if(monthSep < 10){self.monthTraits[monthSep+2].frame = CGRect(x: frameBound.maxX-20, y: 66, width: 1, height: 20)
+                self.monthLabel[monthSep+2].center = CGPoint(x: frameBound.maxX-20, y: 95)}
+            
+            self.line.frame = CGRect(x: 0, y: 75, width: 1250, height: 2)
+            //self.viewCal.layoutIfNeeded()
+            
+            for constraint in self.viewCal.constraints as [NSLayoutConstraint] {
+                if constraint.identifier == "viewcalWidth" {
+                    constraint.constant = 1250
+                    UIView.animate(withDuration: 0.5, animations: {
+                        self.view.layoutIfNeeded()
+                    })
+                }
+            }
+            
+            
+            
+            UIView.animate(withDuration: 0.8, animations: {
+                for i in 0...11{
+                    self.monthTraits[i].alpha = 1
+                    self.monthLabel[i].alpha = 1
+                    self.monthTraits[i].frame = CGRect(x: i*100+25, y: 70, width: 1, height: 17)
+                    self.monthLabel[i].center = CGPoint(x: i*100+25, y: 95)
+                }
+                let yy = self.dayTraits[1].center.y
+                let yy2 = self.dayLabel[1].center.y
+                for i in 0...30{
+                    self.dayTraits[i].alpha = 0
+                    self.dayLabel[i].alpha = 0
+                    self.dayTraits[i].center = CGPoint(x: mid, y: yy)
+                    self.dayLabel[i].center = CGPoint(x: mid, y: yy2)
+                }
+                
+                self.labelDate.text = "2017"
+                self.buttonYear.isEnabled = false
+                self.buttonYear.alpha = 0
+                self.labelDate.frame = CGRect(x: 0, y: 0, width: 100, height: 30)
+                self.labelDate.center = CGPoint(x: self.bigFrame.width/2-25.0, y: self.bigFrame.height/2)
+                
+            })
+            
+            
+        }
+        if scale == "hour"{
+            scale = "month"
+            let mid:CGFloat = CGFloat(monthSelect)*100 + CGFloat(25)
+            let mid1 = mid - self.view.frame.width/2
+            
+            self.scrollView.contentOffset = CGPoint(x: mid1, y: 0)
+            
+            let frameBound = scrollView.bounds
+            
+            let monthSep = monthSelect
+            
+            if(monthSep > 1){self.monthTraits[monthSep-2].frame = CGRect(x: frameBound.minX-20, y: 66, width: 1, height: 20)
+                self.monthLabel[monthSep-2].center = CGPoint(x: frameBound.minX-20, y: 95)}
+            if(monthSep > 0){self.monthTraits[monthSep-1].frame = CGRect(x: frameBound.minX-20, y: 66, width: 1, height: 20)
+                self.monthLabel[monthSep-1].center = CGPoint(x: frameBound.minX-20, y: 95)}
+            self.monthTraits[monthSep].frame = CGRect(x: frameBound.minX-20, y: 66, width: 1, height: 20)
+            self.monthLabel[monthSep].center = CGPoint(x: frameBound.minX-20, y: 95)
+            if(monthSep < 9){self.monthTraits[monthSep+1].frame = CGRect(x: frameBound.maxX-20, y: 66, width: 1, height: 20)
+                self.monthLabel[monthSep+1].center = CGPoint(x: frameBound.maxX-20, y: 95)}
+            if(monthSep < 10){self.monthTraits[monthSep+2].frame = CGRect(x: frameBound.maxX-20, y: 66, width: 1, height: 20)
+                self.monthLabel[monthSep+2].center = CGPoint(x: frameBound.maxX-20, y: 95)}
+            
+            self.line.frame = CGRect(x: 0, y: 75, width: 1250, height: 2)
+            //self.viewCal.layoutIfNeeded()
+            
+            for constraint in self.viewCal.constraints as [NSLayoutConstraint] {
+                if constraint.identifier == "viewcalWidth" {
+                    constraint.constant = 1250
+                    UIView.animate(withDuration: 0.5, animations: {
+                        self.view.layoutIfNeeded()
+                    })
+                }
+            }
+            
+            UIView.animate(withDuration: 0.8, animations: {
+                for i in 0...11{
+                    self.monthTraits[i].alpha = 1
+                    self.monthLabel[i].alpha = 1
+                    self.monthTraits[i].frame = CGRect(x: i*100+25, y: 70, width: 1, height: 17)
+                    self.monthLabel[i].center = CGPoint(x: i*100+25, y: 95)
+                }
+                let yy = self.hourTraits[1].center.y
+                let yy2 = self.hourLabel[1].center.y
+                for i in 0...23{
+                    self.hourTraits[i].alpha = 0
+                    self.hourLabel[i].alpha = 0
+                    self.hourTraits[i].center = CGPoint(x: mid, y: yy)
+                    self.hourLabel[i].center = CGPoint(x: mid, y: yy2)
+                }
+                
+                self.buttonMonth.isEnabled = false
+                self.buttonMonth.alpha = 0
+                self.labelDate.text = "2017"
+                self.buttonYear.isEnabled = false
+                self.buttonYear.alpha = 0
+                self.labelDate.frame = CGRect(x: 0, y: 0, width: 100, height: 30)
+                self.labelDate.center = CGPoint(x: self.bigFrame.width/2-25.0, y: self.bigFrame.height/2)
+                
+            })
+        }
     }
     
 }
