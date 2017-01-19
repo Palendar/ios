@@ -13,8 +13,6 @@ class Profile: Model2{
     
     @IBOutlet weak var scrollView: UIScrollView!
     
-    @IBOutlet weak var boutonProfile: UIButton!
-    
     @IBOutlet weak var boutonCalendar: UIButton!
     
     @IBOutlet weak var boutonBNotif: UIButton!
@@ -25,13 +23,14 @@ class Profile: Model2{
         Constante.set("Profile", forKey: "lastPage")
         
         super.viewDidLoad()
-        boutonCalendar.setTitleColor(UIColor.black, for: .normal)
         boutonBNotif.setTitleColor(UIColor.black, for: .normal)
         
+        /*
         let PV:ProfileView = ProfileView(nibName: "ProfileView", bundle: nil)
         self.addChildViewController(PV)
         self.scrollView.addSubview(PV.view)
         PV.didMove(toParentViewController: self)
+        */
         
         let CV:CalendarView = CalendarView(nibName: "CalendarView", bundle: nil)
         self.addChildViewController(CV)
@@ -43,13 +42,11 @@ class Profile: Model2{
         self.scrollView.addSubview(NV.view)
         NV.didMove(toParentViewController: self)
         
-        PV.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height-170)
+        CV.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height-170)
         
-        CV.view.frame = CGRect(x: self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height-170)
+        NV.view.frame = CGRect(x: self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height-170)
         
-        NV.view.frame = CGRect(x: self.view.frame.width*2, y: 0, width: self.view.frame.width, height: self.view.frame.height-170)
-        
-        self.scrollView.contentSize = CGSize(width: self.view.frame.width*3, height: self.view.frame.size.height-170)
+        self.scrollView.contentSize = CGSize(width: self.view.frame.width*2, height: self.view.frame.size.height-170)
         
         scrollView.delegate = self
     }
@@ -59,29 +56,18 @@ class Profile: Model2{
         // Dispose of any resources that can be recreated.
     }
     
-
-    @IBAction func ProfileButton(_ sender: Any) {
+    
+    @IBAction func CalendarButton(_ sender: Any) {
         //UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions(), animations: {
             self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
         //}, completion: nil)
         boutonBNotif.titleLabel?.textColor = UIColor.black
-        boutonCalendar.titleLabel?.textColor = UIColor.black
-    }
-    
-    @IBAction func CalendarButton(_ sender: Any) {
-        //UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions(), animations: {
-            self.scrollView.contentOffset = CGPoint(x: self.view.frame.width, y: 0)
-        //}, completion: nil)
-        boutonProfile.titleLabel?.textColor = UIColor.black
-        boutonBNotif.titleLabel?.textColor = UIColor.black
-        boutonCalendar.setTitleColor(UIColor.init(netHex: 0x0080FF), for: .normal)
     }
     
     @IBAction func NotificationButton(_ sender: Any) {
         //UIView.animate(withDuration: 0.5, delay: 0, options: UIViewAnimationOptions(), animations: {
-            self.scrollView.contentOffset = CGPoint(x: self.view.frame.width*2, y: 0)
+            self.scrollView.contentOffset = CGPoint(x: self.view.frame.width, y: 0)
         //}, completion: nil)
-        boutonProfile.titleLabel?.textColor = UIColor.black
         boutonCalendar.titleLabel?.textColor = UIColor.black
         boutonBNotif.setTitleColor(UIColor.init(netHex: 0x0080FF), for: .normal)
     }

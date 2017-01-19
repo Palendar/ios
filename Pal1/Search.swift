@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Alamofire
+import SwiftyJSON
 
 class Search: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -26,6 +28,10 @@ class Search: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var exempleData = ["Igloo", "PFE2", "Running Day", "Never Party"]
     var exempleData2 = ["Henry Dupont", "Flavien Jeuri", "Hénormé Sec", "Julien Merci", "Wilson LaRacket"]
     var dataToUse = [""]
+    var idToUse = [""]
+    
+    var peopleSearch : Bool = false
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,16 +54,17 @@ class Search: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
 
     @IBAction func groupAction(_ sender: Any) {
+        peopleSearch = false
         peopleButton.setTitleColor(UIColor.black, for: .normal)
         dataToUse = exempleData
         tableView.reloadData()
     }
     
     @IBAction func peopleAction(_ sender: Any) {
+        peopleSearch = true
         groupbutton.titleLabel?.textColor = UIColor.black
         peopleButton.setTitleColor(UIColor.init(netHex: 0x0080FF), for: .normal)
-        dataToUse = exempleData2
-        tableView.reloadData()
+        getFriendsList()
     }
     @IBAction func endSearchEdit(_ sender: Any) {
         view.endEditing(true)
@@ -104,6 +111,71 @@ class Search: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     
+    @IBAction func ValueChangedSearch(_ sender: Any) {
+        if peopleSearch{
+            let str = textView.text
+            if str != "" {
+                getFriendsSearched(search: str!)
+            }
+            else {
+                getFriendsList()
+            }
+            
+        }
+    }
+    
+    func getFriendsList(){
+        var friends:[String] = []
+        var ids:[String] = []
+        Alamofire.request("http://vinci.aero/palendar/php/test.php").responseJSON {
+            response in
+            switch response.result {
+            case .success(let value):
+                let json = JSON(value)
+                print("list : \(json)")
+                for (key, subJson) in json{
+                    let pseudo = String(describing: subJson["pseudo"])
+                    friends.append(pseudo)
+                    let id = String(describing: subJson["id"])
+                    ids.append(id)
+                }
+                self.idToUse = ids
+                self.dataToUse = friends
+                self.tableView.reloadData()
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    func getFriendsSearched(search : String){
+        var friends:[String] = []
+        var ids:[String] = []
+        let parameters: Parameters = ["search": search]
+        
+        Alamofire.request("http://vinci.aero/palendar/php/search.php", method: .post, parameters: parameters, encoding: URLEncoding.httpBody).responseJSON {
+            response in
+            
+            switch response.result {
+            case .success(let value):
+                
+                let json = JSON(value)
+                print("search : \(json)")
+                for (key, subJson) in json{
+                    let pseudo = String(describing: subJson["pseudo"])
+                    friends.append(pseudo)
+                    let id = String(describing: subJson["id"])
+                    ids.append(id)
+                }
+                self.idToUse = ids
+                self.dataToUse = friends
+                self.tableView.reloadData()
+
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
     
     
     

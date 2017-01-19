@@ -21,8 +21,6 @@
 		2895080E1E1F0F0600E057D7 /* ParametreCompte.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2895080D1E1F0F0600E057D7 /* ParametreCompte.swift */; };
 		289508101E1F19D000E057D7 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2895080F1E1F19D000E057D7 /* Search.swift */; };
 		289508121E1F1E0800E057D7 /* SearchCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289508111E1F1E0800E057D7 /* SearchCellView.swift */; };
-		28965D981E1E86C60070C68E /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28965D961E1E86C60070C68E /* ProfileView.swift */; };
-		28965D991E1E86C60070C68E /* ProfileView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28965D971E1E86C60070C68E /* ProfileView.xib */; };
 		28965D9C1E1E87F60070C68E /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28965D9A1E1E87F60070C68E /* CalendarView.swift */; };
 		28965D9D1E1E87F60070C68E /* CalendarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28965D9B1E1E87F60070C68E /* CalendarView.xib */; };
 		28965DA11E1E8BC90070C68E /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28965D9F1E1E8BC90070C68E /* NotificationView.swift */; };
@@ -42,6 +40,7 @@
 		28DF55611DF21883001284C1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28DF555F1DF21883001284C1 /* LaunchScreen.storyboard */; };
 		28DF556C1DF21883001284C1 /* Pal1Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DF556B1DF21883001284C1 /* Pal1Tests.swift */; };
 		28DF55771DF21883001284C1 /* Pal1UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DF55761DF21883001284C1 /* Pal1UITests.swift */; };
+		28F9D0051E25209700B0206A /* ModifProfil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F9D0041E25209700B0206A /* ModifProfil.swift */; };
 		37C341A6169B4622E7991EA9 /* Pods_Pal1.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3F8D75E608340CDB279DBAA /* Pods_Pal1.framework */; };
 /* End PBXBuildFile section */
 
@@ -78,8 +77,6 @@
 		2895080D1E1F0F0600E057D7 /* ParametreCompte.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParametreCompte.swift; sourceTree = "<group>"; };
 		2895080F1E1F19D000E057D7 /* Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
 		289508111E1F1E0800E057D7 /* SearchCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchCellView.swift; sourceTree = "<group>"; };
-		28965D961E1E86C60070C68E /* ProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
-		28965D971E1E86C60070C68E /* ProfileView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileView.xib; sourceTree = "<group>"; };
 		28965D9A1E1E87F60070C68E /* CalendarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		28965D9B1E1E87F60070C68E /* CalendarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalendarView.xib; sourceTree = "<group>"; };
 		28965D9F1E1E8BC90070C68E /* NotificationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
@@ -105,6 +102,7 @@
 		28DF55721DF21883001284C1 /* Pal1UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Pal1UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		28DF55761DF21883001284C1 /* Pal1UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pal1UITests.swift; sourceTree = "<group>"; };
 		28DF55781DF21883001284C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		28F9D0041E25209700B0206A /* ModifProfil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModifProfil.swift; sourceTree = "<group>"; };
 		3028740C3D75AE4F49A0EF9D /* Pods-Pal1.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pal1.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Pal1/Pods-Pal1.debug.xcconfig"; sourceTree = "<group>"; };
 		C3F8D75E608340CDB279DBAA /* Pods_Pal1.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pal1.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -143,6 +141,7 @@
 				284B16FF1E1F0C710083F6C9 /* AboutUs.swift */,
 				284B17011E1F0C7D0083F6C9 /* Support.swift */,
 				284B17031E1F0C980083F6C9 /* SyncCalendar.swift */,
+				28F9D0041E25209700B0206A /* ModifProfil.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -150,8 +149,6 @@
 		28965D9E1E1E88060070C68E /* Profile Page */ = {
 			isa = PBXGroup;
 			children = (
-				28965D961E1E86C60070C68E /* ProfileView.swift */,
-				28965D971E1E86C60070C68E /* ProfileView.xib */,
 				28965D9A1E1E87F60070C68E /* CalendarView.swift */,
 				28965D9B1E1E87F60070C68E /* CalendarView.xib */,
 				28965D9F1E1E8BC90070C68E /* NotificationView.swift */,
@@ -378,7 +375,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28965D991E1E86C60070C68E /* ProfileView.xib in Resources */,
 				285047EB1DF36417000221C8 /* Main.storyboard in Resources */,
 				28965D9D1E1E87F60070C68E /* CalendarView.xib in Resources */,
 				28DF55611DF21883001284C1 /* LaunchScreen.storyboard in Resources */,
@@ -465,10 +461,10 @@
 				28965DA41E1EAE080070C68E /* Group.swift in Sources */,
 				2841388A1DF47C7700717BBE /* Configure.swift in Sources */,
 				284B17041E1F0C980083F6C9 /* SyncCalendar.swift in Sources */,
-				28965D981E1E86C60070C68E /* ProfileView.swift in Sources */,
 				2895080E1E1F0F0600E057D7 /* ParametreCompte.swift in Sources */,
 				284B17001E1F0C710083F6C9 /* AboutUs.swift in Sources */,
 				28DF55591DF21883001284C1 /* ViewController.swift in Sources */,
+				28F9D0051E25209700B0206A /* ModifProfil.swift in Sources */,
 				28965D9C1E1E87F60070C68E /* CalendarView.swift in Sources */,
 				288A5E041DF387F30027B43F /* FirstFirstViewController.swift in Sources */,
 				28DB0BB31E1FC19D00CE57B5 /* Model2.swift in Sources */,

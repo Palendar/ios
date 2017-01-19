@@ -11,6 +11,7 @@ import UIKit
 class Model2: Model {
     
     let headerView = UIView()
+    let headerTopView = UIView()
     let footerView = UIView()
     let buttonToSearch = UIButton()
     let PalendarLabel = UILabel()
@@ -20,10 +21,16 @@ class Model2: Model {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         headerView.backgroundColor = UIColor.init(netHex: 0xE6E6E6)
         headerView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 70)
         self.view.addSubview(headerView)
+        
+        
+        headerTopView.backgroundColor = UIColor.init(netHex: 0x4F5151)
+        headerTopView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 20)
+        self.view.addSubview(headerTopView)
+        
         
         footerView.backgroundColor = UIColor.init(netHex: 0xE6E6E6)
         footerView.frame = CGRect(x: 0, y: self.view.frame.height-50, width: self.view.frame.width, height: 50)
