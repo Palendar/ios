@@ -30,6 +30,7 @@
 		28965DAB1E1EB5CF0070C68E /* CalendarGroupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28965DA91E1EB5CF0070C68E /* CalendarGroupView.xib */; };
 		28965DAE1E1EB5E30070C68E /* MemberGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28965DAC1E1EB5E30070C68E /* MemberGroupView.swift */; };
 		28965DAF1E1EB5E30070C68E /* MemberGroupView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28965DAD1E1EB5E30070C68E /* MemberGroupView.xib */; };
+		28BA216D1E32A7F500AD3D29 /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BA216C1E32A7F500AD3D29 /* EventView.swift */; };
 		28C2AFCA1DF3DCB100BCB0F7 /* SignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C2AFC91DF3DCB100BCB0F7 /* SignUp.swift */; };
 		28C301561DF2F61200B5EE1C /* Short.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C301551DF2F61200B5EE1C /* Short.swift */; };
 		28DB0BAF1E1FAF9A00CE57B5 /* CustomSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DB0BAE1E1FAF9A00CE57B5 /* CustomSegue.swift */; };
@@ -86,6 +87,7 @@
 		28965DA91E1EB5CF0070C68E /* CalendarGroupView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalendarGroupView.xib; sourceTree = "<group>"; };
 		28965DAC1E1EB5E30070C68E /* MemberGroupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemberGroupView.swift; sourceTree = "<group>"; };
 		28965DAD1E1EB5E30070C68E /* MemberGroupView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MemberGroupView.xib; sourceTree = "<group>"; };
+		28BA216C1E32A7F500AD3D29 /* EventView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		28C2AFC91DF3DCB100BCB0F7 /* SignUp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUp.swift; sourceTree = "<group>"; };
 		28C301551DF2F61200B5EE1C /* Short.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Short.swift; sourceTree = "<group>"; };
 		28DB0BAE1E1FAF9A00CE57B5 /* CustomSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSegue.swift; sourceTree = "<group>"; };
@@ -149,6 +151,7 @@
 		28965D9E1E1E88060070C68E /* Profile Page */ = {
 			isa = PBXGroup;
 			children = (
+				28BA216C1E32A7F500AD3D29 /* EventView.swift */,
 				28965D9A1E1E87F60070C68E /* CalendarView.swift */,
 				28965D9B1E1E87F60070C68E /* CalendarView.xib */,
 				28965D9F1E1E8BC90070C68E /* NotificationView.swift */,
@@ -469,6 +472,7 @@
 				288A5E041DF387F30027B43F /* FirstFirstViewController.swift in Sources */,
 				28DB0BB31E1FC19D00CE57B5 /* Model2.swift in Sources */,
 				287444D21E1C6489003711D7 /* CreateGroup.swift in Sources */,
+				28BA216D1E32A7F500AD3D29 /* EventView.swift in Sources */,
 				28965DA11E1E8BC90070C68E /* NotificationView.swift in Sources */,
 				289508101E1F19D000E057D7 /* Search.swift in Sources */,
 				284B17021E1F0C7D0083F6C9 /* Support.swift in Sources */,

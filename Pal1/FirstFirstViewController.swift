@@ -11,6 +11,15 @@ import UIKit
 class FirstFirstViewController: UIViewController {
     
     let Constante:UserDefaults = UserDefaults.standard
+    
+    @IBOutlet weak var loginButton: UIButton!
+    
+    @IBOutlet weak var signUpButton: UIButton!
+    
+    override func viewWillAppear(_ animated: Bool) {
+        loginButton.alpha = 0
+        signUpButton.alpha = 0
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +44,8 @@ class FirstFirstViewController: UIViewController {
                     
                 }
                 else {
-                    
+                    loginButton.alpha = 1
+                    signUpButton.alpha = 1
                 }
             }
             catch {/* error handling here */}

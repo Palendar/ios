@@ -91,6 +91,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="loginButton" destination="lSC-Kt-DUN" id="Xmi-Pb-7t1"/>
+                        <outlet property="signUpButton" destination="kah-34-ceh" id="9PN-Ne-Xr4"/>
                         <segue destination="VZu-xy-r7G" kind="show" identifier="toUSER" id="jVO-JV-0mr"/>
                     </connections>
                 </viewController>
@@ -292,7 +294,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-951" y="-92"/>
+            <point key="canvasLocation" x="-763" y="-118"/>
         </scene>
         <!--User-->
         <scene sceneID="2Wo-Gt-Uue">
@@ -2913,8 +2915,8 @@
         <image name="sendMail" width="512" height="512"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Idr-Uw-Cur"/>
-        <segue reference="u6C-g9-Nd9"/>
-        <segue reference="bap-l3-IM7"/>
+        <segue reference="jVO-JV-0mr"/>
+        <segue reference="LsU-vm-1qs"/>
+        <segue reference="WcO-g3-qaA"/>
     </inferredMetricsTieBreakers>
 </document>
