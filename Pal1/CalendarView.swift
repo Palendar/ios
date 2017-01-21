@@ -30,6 +30,8 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
     
     @IBOutlet weak var eventEndLabel: UILabel!
     
+    
+    
     var greyLine:UIView = UIView()
     var blackLine:UIView = UIView()
     
@@ -65,11 +67,15 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
     var eventsEnd:[String] = ["21-01-2017 14:30", "22-01-2017 18:00"]
     var eventText:[String] = ["Sieste", "Devoir maison"]
     
+    var premierEventX:CGFloat = -1
+    
     var eventsViewsDay:[EventViewDay] = []
     var eventsViewsMonth:[EventViewMonth] = []
     
     
     var tap = UITapGestureRecognizer()
+    
+    var newEventCircle = UIView()
     
     
     
@@ -159,6 +165,11 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
         hideEventDescription()
         
         loadEvent()
+        
+        newEventCircle.backgroundColor = UIColor(red: 68, green: 68, blue: 68)
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+        longPress.minimumPressDuration = 0.1
+        viewCal.addGestureRecognizer(longPress)
     }
     
     
@@ -212,6 +223,7 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
         if scale == "hour" && daySelect == jourStart && daySelect == jourEnd && monthSelect == moisStart && monthSelect == moisEnd && yearSelect == yearStart{
             let exemple = EventViewDay()
             let xxx:CGFloat = CGFloat(minuteInDayStart*129/60) + CGFloat(25.0)
+            premierEventX = xxx
             let www:CGFloat = CGFloat((minuteInDayEnd-minuteInDayStart)*129)/CGFloat(60.0)
             exemple.frame = CGRect(x: xxx, y: 10, width: www, height: 65)
             exemple.labelEvent.text = dE
@@ -241,10 +253,55 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
         self.eventStartLabel.text = ""
     }
     
+    func scrollToFirstEvent(){
+        if premierEventX != -1{
+            let cgp = CGPoint(x: premierEventX-100, y: 0)
+            scrollView.setContentOffset(cgp , animated: true)
+            premierEventX = -1
+        }
+    }
     
     
     
     
+    func handleLongPress(_ longPress: UILongPressGestureRecognizer) {
+        if scale == "hour"{
+            switch longPress.state {
+            case .changed:
+                let point = longPress.location(in: viewCal)
+                newEventCircle.center = CGPoint(x: point.x - 20, y: point.y - 20)
+                newEventCircle.alpha = point.y > 150 ? 0 : 1
+            case .began:
+                let point = longPress.location(in: viewCal)
+                viewCal.addSubview(newEventCircle)
+                newEventCircle.center = CGPoint(x: point.x - 20, y: point.y - 20)
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.newEventCircle.frame = CGRect(x: point.x-45, y: point.y-45, width: 50, height: 50)
+                    self.newEventCircle.cornerRadius = self.newEventCircle.frame.width / 2
+                    self.newEventCircle.alpha = 0.5
+                })
+            case .ended:
+                let point = longPress.location(in: viewCal)
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.newEventCircle.frame = CGRect(x: point.x-10, y: point.y-10, width: 0, height: 0)
+                    self.newEventCircle.alpha = 0
+                }, completion : { finish in
+                        if point.y < 150{
+                        let heure =  Int((self.newEventCircle.center.x-25.0)/129)
+                        let minutee = ((Int(self.newEventCircle.center.x)-25)%129)*60/129
+                        let minute = minutee - (minutee % 5)
+                        
+                        
+                        //creation de l'event
+                        self.eventStartLabel.text = "On \(self.daySelect)th of \(self.months[self.monthSelect-1]) à \(heure)H \(minute)"
+                    }
+                    self.newEventCircle.removeFromSuperview()
+                })
+            default:
+                break
+            }
+        }
+    }
     
     
     
@@ -274,13 +331,13 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scale == "month"{
             if scrollView.panGestureRecognizer.state == .began{
-                if scrollView.bounds.minX > 1250 - view.frame.width{
+                if scrollView.bounds.minX > 1240 - view.frame.width{
                     condNext2 = true
                 }
                 else {
                     condNext2 = false
                 }
-                if scrollView.bounds.minX < -1{
+                if scrollView.bounds.minX < 10{
                     condPrev2 = true
                 }
                 else {
@@ -416,13 +473,13 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
         }
         if scale == "day"{
             if scrollView.panGestureRecognizer.state == .began{
-                if scrollView.bounds.minX > 2450 - view.frame.width{
+                if scrollView.bounds.minX > 2440 - view.frame.width{
                     condNext2 = true
                 }
                 else {
                     condNext2 = false
                 }
-                if scrollView.bounds.minX < -1{
+                if scrollView.bounds.minX < 10{
                     condPrev2 = true
                 }
                 else {
@@ -566,13 +623,13 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
         }
         if scale == "hour"{
             if scrollView.panGestureRecognizer.state == .began{
-                if scrollView.bounds.minX > 2450 - view.frame.width{
+                if scrollView.bounds.minX > 2440 - view.frame.width{
                     condNext2 = true
                 }
                 else {
                     condNext2 = false
                 }
-                if scrollView.bounds.minX < -1{
+                if scrollView.bounds.minX < 10{
                     condPrev2 = true
                 }
                 else {
@@ -903,6 +960,8 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
                     self.labelDate.frame = CGRect(x: 10, y: 10, width: 50, height: 40)
                     self.buttonYear.frame = CGRect(x: self.bigFrame.width/2+50.0, y: 10, width: 50, height: 40)
                 self.loadEvent()
+            }, completion : {finish in
+                self.scrollToFirstEvent()
             })
         }
         if scale == "month"{
