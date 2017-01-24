@@ -2865,7 +2865,7 @@
                                     <action selector="synchroCal:" destination="gpH-tD-XR0" eventType="touchUpInside" id="NLr-CQ-RBE"/>
                                 </connections>
                             </button>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="4p9-3W-SDh">
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="4p9-3W-SDh">
                                 <rect key="frame" x="276" y="165" width="37" height="37"/>
                                 <color key="color" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </activityIndicatorView>
@@ -2931,7 +2931,7 @@
         <image name="sendMail" width="512" height="512"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="p9t-gp-cAc"/>
+        <segue reference="CBx-H6-y90"/>
         <segue reference="bap-l3-IM7"/>
         <segue reference="cAY-vD-K56"/>
     </inferredMetricsTieBreakers>

@@ -44,10 +44,6 @@ class SyncCalendar: Model {
         self.eventStore.requestAccess(to: EKEntityType.event, completion: {
             (success: Bool, error: Error?) in
             if success{
-                // 2
-                
-                
-                
                 let dateFormatter = DateFormatter()
                 
                 dateFormatter.locale = Locale(identifier: "fr_FR")
