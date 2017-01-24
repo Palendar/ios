@@ -11,6 +11,8 @@ import FacebookLogin
 import FacebookCore
 import FBSDKLoginKit
 import FBSDKCoreKit
+import Alamofire
+import SwiftyJSON
 
 class SignUp: UIViewController {
     
@@ -120,6 +122,7 @@ class SignUp: UIViewController {
         scrollForKeyboard(val: 10)
     }
     @IBAction func tuchMail(_ sender: Any) {
+        inputEmail.placeholder = ""
         scrollForKeyboard(val: -70)
     }
     @IBAction func tuchPass(_ sender: Any) {
@@ -132,15 +135,65 @@ class SignUp: UIViewController {
     
     
     @IBAction func signUpAction(_ sender: Any) {
-        if userName.text != "" && inputEmail.text != "" && (inputPass1.text?.characters.count)! > 5 && inputPass2.text! == inputPass1.text {
+        if surname.text != "" && userName.text != "" && inputEmail.text != "" && (inputPass1.text?.characters.count)! > 5 && inputPass2.text! == inputPass1.text {
+            let surnamee = surname.text
             let prenom = userName.text
             let pass = inputPass1.text
             let email = inputEmail.text
-            let text = "MANU/&/\(prenom!)/&/\(email!)/&/\(pass!)"
-            self.ecrireLocal(str: text)
-            let token = text.components(separatedBy: "/&/")
-            self.Constante.set(token, forKey: "dataWritten")
-            self.performSegue(withIdentifier: "toConfigure", sender: self)
+            
+            
+            let parameters: Parameters = [
+                "email":email!,
+                "password":pass!,
+                "firstname":prenom!,
+                "lastname":surnamee!
+            ]
+            
+            let parameters2: Parameters = [
+                "email":email!
+            ]
+            
+            Alamofire.request("http://vinci.aero/palendar/php/checkEmail.php", method: .post, parameters: parameters2, encoding: URLEncoding.httpBody).responseJSON {
+                response in
+                switch response.result {
+                case .success(let value):
+                    //print("search : ")
+                    let json = JSON(value)
+                    
+                    let validate = json["validate"]
+                    if validate == true{
+                        Alamofire.request("http://vinci.aero/palendar/php/register.php", method: .post, parameters: parameters, encoding: URLEncoding.httpBody).responseJSON {
+                            response in
+                            switch response.result {
+                            case .success(let value):
+                                //print("search : ")
+                                let json = JSON(value)
+                                
+                                let validate = json["validate"]
+                                if validate == true{
+                                    let text = "MANU/&/\(email!)/&/\(pass!)"
+                                    self.ecrireLocal(str: text)
+                                    let token = text.components(separatedBy: "/&/")
+                                    self.Constante.set(token, forKey: "dataWritten")
+                                    self.performSegue(withIdentifier: "toConfigure", sender: self)
+                                }
+                            case .failure(let error):
+                                print(error)
+                            }
+                        }
+                    }
+                    else{
+                        self.inputEmail.text = ""
+                        self.inputEmail.attributedPlaceholder = NSAttributedString(string: "Cette adresse possède déjà un compte",
+                                                                        attributes: [NSForegroundColorAttributeName: UIColor.red])
+                    }
+                   
+                    
+                case .failure(let error):
+                    print(error)
+                }
+            }
+            
         }
         else{
             UIView.animate(withDuration: 0.5, animations: {

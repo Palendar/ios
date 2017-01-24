@@ -39,14 +39,10 @@ class User: Model2{
                     }
                 }
             }
-            //imageView.downloadedFrom(link: (array?[4])!)
         }
         
-        //Alamofire.request("https://httpbin.org/get")
-        
-        Alamofire.request("http://vinci.aero/palendar/php/test.php").responseJSON {
+        /*Alamofire.request("http://vinci.aero/palendar/php/test.php").responseJSON {
             response in
-            
             switch response.result {
             case .success(let value):
                 let json = JSON(value)
@@ -55,71 +51,30 @@ class User: Model2{
                     let id = subJson["id"]
                     let pass = subJson["pass"]
                     let pseudo = String(describing: subJson["pseudo"])
-                        
-                    //print("d :\(id)")
-                    //print("pass :\(pass)")
-                    //print("pseudo :\(pseudo)")
-                    
-                }
-                
-            case .failure(let error):
+                  }
+           case .failure(let error):
                 print(error)
             }
-            
-            
-            
         }
         
-        let parameters: Parameters = [
-            "search": "n"
-        ]
-        
+        let parameters: Parameters = ["search": "n"]
         Alamofire.request("http://vinci.aero/palendar/php/search.php", method: .post, parameters: parameters, encoding: URLEncoding.httpBody).responseJSON {
             response in
-            
             switch response.result {
             case .success(let value):
-                //print("search : ")
                 let json = JSON(value)
-                
                 for (key, subJson) in json{
                     let id = subJson["id"]
                     let pass = subJson["pass"]
                     let pseudo = subJson["pseudo"]
-                    
-                    //print("d :\(id)")
-                    //print("pass :\(pass)")
-                    //print("pseudo :\(pseudo)")
-                    
                 }
-                
             case .failure(let error):
                 print(error)
             }
-            
-            
-            
         }
+        */
         
         
-        
-        
-        /*{ response in
-            if let JSON = response.result.value {
-                print("JSON: \(JSON)")
-                response.result.value
-                let response = JSON as! NSDictionary
-                
-                let id = response.object(forKey: "id")!
-                let pass = response.object(forKey: "pass")!
-                let pseudo = response.object(forKey: "pseudo")!
-                print("d :\(id)")
-                print("pass :\(pass)")
-                print("pseudo :\(pseudo)")
-            }
-        }*/
-        
-        //récupérer la liste de tous les groupes
     }
     
     override func didReceiveMemoryWarning() {

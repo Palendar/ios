@@ -30,7 +30,8 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
     
     @IBOutlet weak var eventEndLabel: UILabel!
     
-    
+    let Constante:UserDefaults = UserDefaults.standard
+
     
     var greyLine:UIView = UIView()
     var blackLine:UIView = UIView()
@@ -46,6 +47,8 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
     var monthLabel:[UILabel] = [UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel()]
     
     var months:[String] = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    
+    var dayWeek:[String] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     
     var dayTraits:[UIView] = [UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView()]
     var dayLabel:[UILabel] = [UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel()]
@@ -63,9 +66,9 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
     var condPrev:Int = 0
     var condPrev2:Bool = false
     
-    var eventsStart:[String] = ["21-01-2017 13:30", "22-01-2017 16:00"]
-    var eventsEnd:[String] = ["21-01-2017 14:30", "22-01-2017 18:00"]
-    var eventText:[String] = ["Sieste", "Devoir maison"]
+    var eventsStart:[String] = []
+    var eventsEnd:[String] = []
+    var eventText:[String] = []
     
     var premierEventX:CGFloat = -1
     
@@ -81,6 +84,16 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        eventsStart = Constante.array(forKey: "dateStart") as! [String]
+        eventsEnd = Constante.array(forKey: "dateEnd") as! [String]
+        eventText = Constante.array(forKey: "descriptionEvent") as! [String]
+        eventsStart.append("24-01-2017 13:30")
+        eventsStart.append("25-01-2017 16:00")
+        eventsEnd.append("24-01-2017 14:30")
+        eventsEnd.append("25-01-2017 18:00")
+        eventText.append("Sieste")
+        eventText.append("Devoir maison")
         
         let date = Date()
         let calendar = Calendar.current
@@ -111,13 +124,12 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
         
         for i in 0...30{
             dayTraits[i].backgroundColor = UIColor.black
-            dayTraits[i].frame = CGRect(x: i*100+25, y: 70, width: 1, height: 17)
+            dayTraits[i].frame = CGRect(x: i*100+25, y: 70, width: 1, height: 19)
             self.viewCal.addSubview(dayTraits[i])
-            
-            dayLabel[i].text = String(i+1)+" th"
+            dayLabel[i].text = textDayLabel(i: i)
             dayLabel[i].textColor = UIColor.black
             dayLabel[i].font = UIFont (name: "HelveticaNeue-Light", size: 15)
-            dayLabel[i].frame = CGRect(x: 0, y: 0, width: 50, height: 20)
+            dayLabel[i].frame = CGRect(x: 0, y: 0, width: 55, height: 20)
             dayLabel[i].center = CGPoint(x: i*100+25, y: 95)
             dayLabel[i].textAlignment = NSTextAlignment.center
             self.viewCal.addSubview(dayLabel[i])
@@ -234,15 +246,48 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
             viewCal.addSubview(exemple)
             eventsViewsDay.append(exemple)
         }
-        if scale == "day" && monthSelect == moisStart && yearSelect == yearStart{
+        if scale == "hour" && daySelect == jourStart && daySelect != jourEnd && monthSelect == moisStart && monthSelect == moisEnd && yearSelect == yearStart{
+            let exemple = EventViewDay()
+            let xxx:CGFloat = CGFloat(minuteInDayStart*129/60) + CGFloat(25.0)
+            premierEventX = xxx
+            let www:CGFloat = CGFloat((60*24-minuteInDayStart)*129)/CGFloat(60.0) + CGFloat(25.0)
+            exemple.frame = CGRect(x: xxx, y: 10, width: www, height: 65)
+            exemple.labelEvent.text = dE
+            exemple.endTrait.alpha = 0
+            exemple.startLabel = sD
+            exemple.endLabel = eD
+            exemple.isUserInteractionEnabled = true
+            exemple.rectangle.addGestureRecognizer(tap)
+            viewCal.addSubview(exemple)
+            eventsViewsDay.append(exemple)
+        }
+        if scale == "hour" && daySelect != jourStart && daySelect == jourEnd && monthSelect == moisStart && monthSelect == moisEnd && yearSelect == yearStart{
+            let exemple = EventViewDay()
+            premierEventX = 25
+            let www:CGFloat = CGFloat(minuteInDayEnd*129)/CGFloat(60.0)
+            exemple.frame = CGRect(x: 0, y: 10, width: www, height: 65)
+            exemple.startTrait.alpha = 0
+            exemple.labelEvent.text = dE
+            exemple.startLabel = sD
+            exemple.endLabel = eD
+            exemple.isUserInteractionEnabled = true
+            exemple.rectangle.addGestureRecognizer(tap)
+            viewCal.addSubview(exemple)
+            eventsViewsDay.append(exemple)
+        }
+        if scale == "day" && monthSelect == moisStart && monthSelect == moisEnd && yearSelect == yearStart{
             let exemple = EventViewMonth()
+            exemple.labelEvent.text = dE
             let xxx:CGFloat = CGFloat(minuteInMonthStart*100/1440) + CGFloat(25.0)
             var www:CGFloat = CGFloat((minuteInMonthEnd-minuteInMonthStart)*100)/CGFloat(1440)
+            print("from \(sD) to \(eD) : \(dE)  -> \(minuteInMonthStart) and \(minuteInMonthEnd)")
             if www < 55/3 {www = 55/3}
-            exemple.frame = CGRect(x: xxx-www/2, y: 20, width: www, height: 55)
+            exemple.frame = CGRect(x: xxx, y: 20, width: www, height: 55)
+            exemple.backgroundColor = UIColor.init(white: 60, alpha: 0)
             viewCal.addSubview(exemple)
             eventsViewsMonth.append(exemple)
         }
+        
         
         
     }
@@ -259,6 +304,41 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
             scrollView.setContentOffset(cgp , animated: true)
             premierEventX = -1
         }
+    }
+    
+    func getDayOfWeek(today:String)->String {
+        var result = "Error"
+        let wArray = today.characters.map { String($0) }
+        let strFirstDateOfmonth = "01-"+wArray[3]+wArray[4]+"-"+wArray[6]+wArray[7]+wArray[8]+wArray[9]
+        if Int(wArray[0]+wArray[1])! < getDaysInMonth(today: strFirstDateOfmonth)+1 {
+            let formatter  = DateFormatter()
+            formatter.dateFormat = "dd-MM-yyyy"
+            let todayDate = formatter.date(from: today)!
+            let myCalendar = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
+            let myComponents = myCalendar.components(.weekday, from: todayDate)
+            result = dayWeek[myComponents.weekday!-1]
+        }
+        return result
+    }
+    
+    func getDaysInMonth(today:String)->Int {
+        
+        let formatter  = DateFormatter()
+        formatter.dateFormat = "dd-MM-yyyy"
+        let todayDate = formatter.date(from: today)!
+        let myCalendar = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
+        let startff = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: Calendar.current.startOfDay(for: todayDate)))!
+        let eend = Calendar.current.date(byAdding: DateComponents(month: 1, day: -1), to: startff)!
+        let myComponents2 = myCalendar.components(.day, from: eend)
+        let monthDay = myComponents2.day
+        return monthDay!
+    }
+    
+    func textDayLabel(i:Int) -> String{
+        let j:String = i+1<10 ? "0\(i+1)-" : "\(i+1)-"
+        let k:String = monthSelect < 10 ? "0\(monthSelect)-" : "\(monthSelect)-"
+        let todayString = j+k+"\(yearSelect)"
+        return getDayOfWeek(today: todayString) + " " + String(i+1)
     }
     
     
@@ -329,6 +409,7 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
     
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
         if scale == "month"{
             if scrollView.panGestureRecognizer.state == .began{
                 if scrollView.bounds.minX > 1240 - view.frame.width{
@@ -345,6 +426,7 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
                 }
             
             }
+            //smd
             if scrollView.bounds.minX < -50{
                 prevYearLabel.text = "\(yearSelect-1)"
                 infoPrevView.alpha = 1
@@ -405,7 +487,7 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
                 condPrev = 0
                 infoPrevView.alpha = 0
             }
-
+            //smu
             if scrollView.bounds.minX > 1250 - view.frame.width + 50{
                 nextYearLabel.text = "\(yearSelect+1)"
                 infoNextView.alpha = 1
@@ -487,6 +569,7 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
                 }
                 
             }
+            //sdd
             if scrollView.bounds.minX < -50{
                 prevYearLabel.text = months[(monthSelect-2+12)%12]
                 infoPrevView.alpha = 1
@@ -535,9 +618,10 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
                                 self.dayTraits[29+i].center = CGPoint(x: 25 + 100*(29+i), y: 80)
                                 self.dayLabel[29+i].center = CGPoint(x: 25 + 100*(29+i), y: 95)
                             }
-                            for i in 2...28{
+                            for i in 0...30{
                                 self.dayTraits[i].alpha = 1
                                 self.dayLabel[i].alpha = 1
+                                self.dayLabel[i].text = self.textDayLabel(i: i)
                             }
                             self.greyLine.alpha = 0
                             self.blackLine.alpha = 0
@@ -551,7 +635,7 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
                 condPrev = 0
                 infoPrevView.alpha = 0
             }
-            
+            //sdu
             if scrollView.bounds.minX > 3150 - view.frame.width + 50{
                 nextYearLabel.text = months[(monthSelect+12)%12]
                 infoNextView.alpha = 1
@@ -603,9 +687,10 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
                                 self.dayTraits[i].center = CGPoint(x: 25 + 100*i, y: 80)
                                 self.dayLabel[i].center = CGPoint(x: 25 + 100*i, y: 95)
                             }
-                            for i in 3...28{
+                            for i in 0...30{
                                 self.dayTraits[i].alpha = 1
                                 self.dayLabel[i].alpha = 1
+                                self.dayLabel[i].text = self.textDayLabel(i: i)
                             }
                             self.greyLine.alpha = 0
                             self.blackLine.alpha = 0
@@ -621,6 +706,7 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
                 infoNextView.alpha = 0
             }
         }
+        
         if scale == "hour"{
             if scrollView.panGestureRecognizer.state == .began{
                 if scrollView.bounds.minX > 2440 - view.frame.width{
@@ -637,6 +723,7 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
                 }
                 
             }
+            //shd
             if scrollView.bounds.minX < -50{
                 prevYearLabel.text = "\((daySelect-1+31)%31)"
                 infoPrevView.alpha = 1
@@ -706,7 +793,7 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
                 condPrev = 0
                 infoPrevView.alpha = 0
             }
-            
+            //shu
             if scrollView.bounds.minX > 3150 - view.frame.width + 50{
                 nextYearLabel.text = "\((daySelect+1+31)%31)"
                 infoNextView.alpha = 1
@@ -854,7 +941,7 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
             print(scrollView.convert(hourTraits[5].frame, to: view).minX)
         }
         
-        
+        //dth
          if scale == "day"{
             scale = "hour"
             
@@ -964,6 +1051,7 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
                 self.scrollToFirstEvent()
             })
         }
+        //mtd
         if scale == "month"{
             scale = "day"
             var monthNum  = Int(abs(xx-25) / CGFloat(100))
@@ -993,11 +1081,10 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
                 }
                 dayTraits[i].alpha = 0
                 self.viewCal.addSubview(dayTraits[i])
-                
-                dayLabel[i].text = String(i+1)+" th"
+                dayLabel[i].text = textDayLabel(i: i)
                 dayLabel[i].textColor = UIColor.black
                 dayLabel[i].font = UIFont (name: "HelveticaNeue-Light", size: 15)
-                dayLabel[i].frame = CGRect(x: 0, y: 0, width: 50, height: 20)
+                dayLabel[i].frame = CGRect(x: 0, y: 0, width: 55, height: 20)
                 if i < 12{
                     dayLabel[i].center = CGPoint(x: xx, y: 95)
                 }else{
@@ -1056,6 +1143,7 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
    
     
     func buttonActionMonth(sender: UIButton!) {
+        //htd
         if scale == "hour"{
             scale = "day"
             hideEventDescription()
@@ -1111,6 +1199,7 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
     
     
     func buttonActionYear(sender: UIButton!) {
+        //dtm
         if scale == "day"{
             scale = "month"
             
@@ -1174,6 +1263,7 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
             
             
         }
+        //htm
         if scale == "hour"{
             scale = "month"
             hideEventDescription()

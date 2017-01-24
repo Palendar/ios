@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Alamofire
+import SwiftyJSON
 
 class FirstFirstViewController: UIViewController {
     
@@ -19,16 +21,8 @@ class FirstFirstViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         loginButton.alpha = 0
         signUpButton.alpha = 0
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
         
-
-        // Do any additional setup after loading the view.
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
+        
         let file = "file.txt" //this is the file. we will write to and read from it
         if let dir = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.allDomainsMask, true).first {
             let path = NSURL(fileURLWithPath: dir).appendingPathComponent(file)
@@ -39,8 +33,30 @@ class FirstFirstViewController: UIViewController {
                 print(token)
                 if token != [""]{
                     Constante.set(token, forKey: "dataWritten")
-                    //aller direct a la view User
-                    performSegue(withIdentifier: "toUSER", sender: self)
+                    if token[0] == "MANU"{
+                        let parameters: Parameters = [
+                            "email":token[1],
+                            "password":token[2]
+                        ]
+                        Alamofire.request("http://vinci.aero/palendar/php/login.php", method: .post, parameters: parameters, encoding: URLEncoding.httpBody).responseJSON {
+                            response in
+                            switch response.result {
+                            case .success(let value):
+                                let json = JSON(value)
+                                let validate = json["validate"]
+                                if validate == true{
+                                    
+                                    self.performSegue(withIdentifier: "toUSER", sender: self)
+                                }
+                            case .failure(let error):
+                                print(error)
+                            }
+                        }
+                    }
+                    if token[0] == "FB"{
+                        performSegue(withIdentifier: "toUSER", sender: self)
+                    }
+                    
                     
                 }
                 else {
@@ -50,22 +66,23 @@ class FirstFirstViewController: UIViewController {
             }
             catch {/* error handling here */}
         }
+        
+        
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+
+        // Do any additional setup after loading the view.
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
-    
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

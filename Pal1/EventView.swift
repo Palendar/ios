@@ -53,25 +53,27 @@ class EventViewMonth: UIView {
     
     let rectangle = UIView()
     let trait = UIView()
-    let whiteBack = UIView()
+    let labelEvent = UILabel()
     
     let couleur = UIColor.init(red: 213, green: 221, blue: 246)
     
     override func draw(_ rect: CGRect) {
         
-        whiteBack.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height)
-        whiteBack.backgroundColor = UIColor.white
-        
         rectangle.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height/3)
         rectangle.cornerRadius = self.frame.height/6
         rectangle.backgroundColor = couleur
         
-        trait.frame = CGRect(x: self.frame.width/2-1, y: (self.frame.height/3)-5, width: 2, height: (2*self.frame.height/3)+5)
+        trait.frame = CGRect(x: 0, y: self.frame.height/6, width: 2, height: 5*self.frame.height/6)
         trait.backgroundColor = couleur
         
-        self.addSubview(whiteBack)
+        labelEvent.frame = CGRect(x: 4, y: 0, width: self.frame.width-8, height: self.frame.height/3)
+        labelEvent.textColor = UIColor.black
+        labelEvent.font = UIFont (name: "HelveticaNeue-Light", size: 10)
+        labelEvent.textAlignment = NSTextAlignment.center
+        
         self.addSubview(trait)
         self.addSubview(rectangle)
+        self.addSubview(labelEvent)
     }
     
 }

@@ -7,12 +7,15 @@
 //
 
 import UIKit
-
+import Alamofire
+import SwiftyJSON
 
 class CreateGroup: UIViewController, UITableViewDataSource {
     @IBOutlet weak var groupName: UITextField!
     @IBOutlet weak var descriptionText: UITextField!
     @IBOutlet weak var tableViewMembers: UITableView!
+    @IBOutlet weak var errorMessage: UILabel!
+    
     
     let Constante:UserDefaults = UserDefaults.standard
     
@@ -25,6 +28,7 @@ class CreateGroup: UIViewController, UITableViewDataSource {
     }
 
     override func viewDidLoad() {
+        errorMessage.alpha = 0
         super.viewDidLoad()
     }
 
@@ -64,9 +68,30 @@ class CreateGroup: UIViewController, UITableViewDataSource {
     
     
     @IBAction func createGroupButton(_ sender: Any) {
-        //envoyer la creation du group sur le serveur //nom, description, membre, icon,
+        if groupName.text != "" && descriptionText.text != ""{
+            let parameters: Parameters = [
+                "name":groupName.text!,
+                "description":descriptionText.text!
+            ]
+            Alamofire.request("http://vinci.aero/palendar/php/createGroup.php", method: .post, parameters: parameters, encoding: URLEncoding.httpBody).responseJSON {
+                response in
+                switch response.result {
+                case .success(let value):
+                    let json = JSON(value)
+                    let groupID = json["id"]
+                    self.performSegue(withIdentifier: "toHome", sender: self)
+                case .failure(let error):
+                    print(error)
+                    self.errorMessage.text = "Erreur dans la création du groupe Veuillez réessayer"
+                    self.errorMessage.alpha = 1
+                }
+            }
+        }
+        else {
+            errorMessage.alpha = 1
+            errorMessage.text = "Veuillez préciser un nom et une description"
+        }
         
-        self.performSegue(withIdentifier: "toHome", sender: self)
     }
     
     func scrollDescriptionForKeyboard(val:CGFloat){

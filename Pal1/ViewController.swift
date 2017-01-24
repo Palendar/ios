@@ -11,6 +11,8 @@ import FacebookLogin
 import FacebookCore
 import FBSDKLoginKit
 import FBSDKCoreKit
+import Alamofire
+import SwiftyJSON
 
 class ViewController: UIViewController {
 
@@ -21,11 +23,14 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var buttonConnect: UIButton!
     
+    @IBOutlet weak var errorConnect: UILabel!
+    
     let Constante:UserDefaults = UserDefaults.standard
 
     
     var logged:Bool = false
     override func viewDidLoad() {
+        errorConnect.alpha = 0
         super.viewDidLoad() 
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -43,19 +48,31 @@ class ViewController: UIViewController {
         if email != "" && pass != ""{
             //Verifier si ils existent bien dans la base :
             //récupérer le prenom
-            let prenom = "test"
-            
-            
-            if true{
-                let text = "MANU/&/\(prenom)/&/\(email!)/&/\(pass!)"
-                self.ecrireLocal(str: text)
-                let token = text.components(separatedBy: "/&/")
-                self.Constante.set(token, forKey: "dataWritten")
-                self.performSegue(withIdentifier: "toUSERLOGIN", sender: self)
+            let parameters: Parameters = [
+                "email":email!,
+                "password":pass!
+            ]
+            Alamofire.request("http://vinci.aero/palendar/php/login.php", method: .post, parameters: parameters, encoding: URLEncoding.httpBody).responseJSON {
+                response in
+                switch response.result {
+                case .success(let value):
+                    let json = JSON(value)
+                    let validate = json["validate"]
+                    if validate == true{
+                        let text = "MANU/&/\(email!)/&/\(pass!)"
+                        self.ecrireLocal(str: text)
+                        let token = text.components(separatedBy: "/&/")
+                        self.Constante.set(token, forKey: "dataWritten")
+                        self.performSegue(withIdentifier: "toUSERLOGIN", sender: self)
+                    }
+                    else{
+                        self.errorConnect.alpha = 1
+                    }
+                case .failure(let error):
+                    print(error)
+                }
             }
-            else{
-                
-            }
+            
         }
         else{
             
