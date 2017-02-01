@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NotificationView" customModule="Pal1" customModuleProvider="target">
             <connections>
+                <outlet property="tableView" destination="6Bv-4x-yHk" id="ldS-j1-MFc"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -19,27 +20,21 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notification" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iuw-zG-BrH">
-                    <rect key="frame" x="143.5" y="323" width="88" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="esf-oS-XY1">
-                    <rect key="frame" x="16" y="20" width="340" height="208"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" rowHeight="40" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="6Bv-4x-yHk">
+                    <rect key="frame" x="16" y="20" width="343" height="611"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="208" id="DjY-55-cIq"/>
-                    </constraints>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="M9r-VZ-zdo"/>
+                        <outlet property="delegate" destination="-1" id="WaK-PL-N4I"/>
+                    </connections>
                 </tableView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="esf-oS-XY1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="LfX-cB-1Vu"/>
-                <constraint firstItem="iuw-zG-BrH" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="Wtp-Bt-F4R"/>
-                <constraint firstAttribute="trailing" secondItem="esf-oS-XY1" secondAttribute="trailing" constant="19" id="adH-5L-bR0"/>
-                <constraint firstItem="iuw-zG-BrH" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="fEx-Na-gnx"/>
-                <constraint firstItem="esf-oS-XY1" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="sJa-M1-vQg"/>
+                <constraint firstAttribute="bottom" secondItem="6Bv-4x-yHk" secondAttribute="bottom" constant="36" id="M9e-fk-Xmv"/>
+                <constraint firstItem="6Bv-4x-yHk" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="Xun-jW-hth"/>
+                <constraint firstAttribute="trailing" secondItem="6Bv-4x-yHk" secondAttribute="trailing" constant="16" id="ihg-fV-dDt"/>
+                <constraint firstItem="6Bv-4x-yHk" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="rbC-8e-6Cb"/>
             </constraints>
             <point key="canvasLocation" x="33.5" y="56.5"/>
         </view>

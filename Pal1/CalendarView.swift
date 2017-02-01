@@ -42,6 +42,7 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
     let buttonMonth = UIButton()
     let labelDate = UILabel()
     let line = UIView()
+    // let dispoLine = UIView()
     
     var monthTraits:[UIView] = [UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView(),UIView()]
     var monthLabel:[UILabel] = [UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel(),UILabel()]
@@ -74,13 +75,21 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
     
     var eventsViewsDay:[EventViewDay] = []
     var eventsViewsMonth:[EventViewMonth] = []
+    var eventsViewsYear:[EventViewYear] = []
+    
+    var cicleDraw:[UIView] = []
     
     
     var tap = UITapGestureRecognizer()
     
     var newEventCircle = UIView()
     
-    
+    override func viewWillAppear(_ animated: Bool) {
+        for i in self.cicleDraw{
+            i.removeFromSuperview()
+        }
+        self.cicleDraw.removeAll()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,6 +103,14 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
         eventsEnd.append("25-01-2017 18:00")
         eventText.append("Sieste")
         eventText.append("Devoir maison")
+        if Constante.bool(forKey: "comeFromAdd"){
+            eventsStart.append(Constante.string(forKey: "dateStartAdd")!)
+            eventsEnd.append(Constante.string(forKey: "dateEndAdd")!)
+            eventText.append(Constante.string(forKey: "dateDescriptionAdd")!)
+            Constante.set(false, forKey: "comeFromAdd")
+        }
+        
+        
         
         let date = Date()
         let calendar = Calendar.current
@@ -121,6 +138,13 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
         self.line.backgroundColor = UIColor.black
         self.line.frame = CGRect(x: 0, y: 75, width: self.viewCal.frame.width, height: 2)
         self.viewCal.addSubview(line)
+        
+        /* Affiche sur la calendrier de groupe
+        self.dispoLine.backgroundColor = UIColor.green
+        self.dispoLine.frame = CGRect(x: 0, y: 70, width: self.viewCal.frame.width, height: 5)
+        self.viewCal.addSubview(dispoLine)
+        */
+        
         
         for i in 0...30{
             dayTraits[i].backgroundColor = UIColor.black
@@ -210,8 +234,12 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
         for e in eventsViewsMonth{
             e.removeFromSuperview()
         }
+        for e in eventsViewsYear{
+            e.removeFromSuperview()
+        }
         eventsViewsMonth.removeAll()
         eventsViewsDay.removeAll()
+        eventsViewsYear.removeAll()
         if eventsStart.count != 0{
             for i in 0...eventsStart.count-1{
                 afficherEvent(sD: eventsStart[i], eD: eventsEnd[i], dE: eventText[i])
@@ -231,6 +259,7 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
         let minuteInDayEnd = Int(eDArray[11]+eDArray[12])!*60 + Int(eDArray[14]+eDArray[15])!
         let minuteInMonthStart = (Int(sdArray[0]+sdArray[1])!-1)*60*24 + Int(sdArray[11]+sdArray[12])!*60 + Int(sdArray[14]+sdArray[15])!
         let minuteInMonthEnd = (Int(eDArray[0]+eDArray[1])!-1)*60*24 + Int(eDArray[11]+eDArray[12])!*60 + Int(eDArray[14]+eDArray[15])!
+        let dayInYear = (Int(eDArray[0]+eDArray[1]))!+(Int(sdArray[3]+sdArray[4])!-1)*30
         //attention aux chevauchements, bien comprendre
         if scale == "hour" && daySelect == jourStart && daySelect == jourEnd && monthSelect == moisStart && monthSelect == moisEnd && yearSelect == yearStart{
             let exemple = EventViewDay()
@@ -287,6 +316,15 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
             viewCal.addSubview(exemple)
             eventsViewsMonth.append(exemple)
         }
+        if scale == "month" && yearStart == yearSelect{
+            let exemple = EventViewYear()
+            let xxx:CGFloat = CGFloat(dayInYear*1200/365) + CGFloat(25.0)
+            exemple.frame = CGRect(x: xxx, y: 20, width: 55/3, height: 55)
+            exemple.backgroundColor = UIColor.init(white: 60, alpha: 0)
+            viewCal.addSubview(exemple)
+            eventsViewsYear.append(exemple)
+        }
+        
         
         
         
@@ -348,7 +386,14 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
         if scale == "hour"{
             switch longPress.state {
             case .changed:
+                
                 let point = longPress.location(in: viewCal)
+                let newCircle = UIView()
+                newCircle.frame = CGRect(x: point.x-30, y: point.y-30, width: 10, height: 10)
+                newCircle.layer.cornerRadius = 5
+                newCircle.backgroundColor = UIColor.orange
+                viewCal.addSubview(newCircle)
+                cicleDraw.append(newCircle)
                 newEventCircle.center = CGPoint(x: point.x - 20, y: point.y - 20)
                 newEventCircle.alpha = point.y > 150 ? 0 : 1
             case .began:
@@ -367,15 +412,43 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
                     self.newEventCircle.alpha = 0
                 }, completion : { finish in
                         if point.y < 150{
-                        let heure =  Int((self.newEventCircle.center.x-25.0)/129)
-                        let minutee = ((Int(self.newEventCircle.center.x)-25)%129)*60/129
-                        let minute = minutee - (minutee % 5)
+                            var exDroite = 30000.0
+                            var exGauche = 0.0
+                            for i in self.cicleDraw{
+                                if i.center.x < CGFloat(exDroite){
+                                    exDroite = Double(i.center.x)
+                                }
+                                if i.center.x > CGFloat(exGauche){
+                                    exGauche = Double(i.center.x)
+                                }
+                            }
+                            let heure =  exDroite/129
+                            let minutee = (exDroite.truncatingRemainder(dividingBy: 129))*60/129
+                            let minute = minutee - (minutee.truncatingRemainder(dividingBy: 5))
+                            
+                            let heure2 =  exGauche/129
+                            let minutee2 = (exGauche.truncatingRemainder(dividingBy: 129))*60/129
+                            let minute2 = minutee2 - (minutee2.truncatingRemainder(dividingBy: 5))
                         
                         
                         //creation de l'event
-                        self.eventStartLabel.text = "On \(self.daySelect)th of \(self.months[self.monthSelect-1]) à \(heure)H \(minute)"
+                            
+                            let dateCrate : String = self.gg(g: self.daySelect) + "-" + self.gg(g: self.monthSelect) + "-\(self.yearSelect) " + self.gg(g: Int(heure)) + ":" + self.gg(g: Int(minute))
+                            let dateCrateEnd : String = self.gg(g: self.daySelect) + "-" + self.gg(g: self.monthSelect) + "-\(self.yearSelect) " + self.gg(g: Int(heure2)) + ":" + self.gg(g: Int(minute2))
+                            
+                            self.Constante.set(dateCrate, forKey: "dateCreateString")
+                            self.Constante.set(dateCrateEnd, forKey: "dateCreateEndString")
+                            
+                            self.Constante.set("Profile", forKey: "beforeAdd")
+                            
+                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                        let vc = storyboard.instantiateViewController(withIdentifier: "createEvent") as UIViewController
+                        self.present(vc, animated: true, completion: nil)
+                        
+                        //self.eventStartLabel.text = "On \
                     }
                     self.newEventCircle.removeFromSuperview()
+                    
                 })
             default:
                 break
@@ -383,7 +456,16 @@ class CalendarView: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    
+    func gg(g:Int)->String{
+        var hhh = ""
+        if g < 10{
+            hhh = "0\(g)"
+        }
+        else{
+            hhh = "\(g)"
+        }
+        return hhh
+    }
     
     
     

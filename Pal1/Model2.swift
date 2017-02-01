@@ -18,9 +18,18 @@ class Model2: Model {
     let SettingsButton = UIButton()
     let buttonToHome = UIButton()
     let buttonToGroup = UIButton()
+    let labelNoConnection = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        labelNoConnection.backgroundColor = UIColor.red
+        labelNoConnection.textColor = UIColor.white
+        labelNoConnection.font = UIFont (name: "HelveticaNeue-Light", size: 12)
+        labelNoConnection.textAlignment = NSTextAlignment.center
+        labelNoConnection.text = "Connection Error"
+        labelNoConnection.alpha = 0
+        self.view.addSubview(labelNoConnection)
         
         headerView.backgroundColor = UIColor.init(netHex: 0xE6E6E6)
         headerView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 70)
@@ -30,7 +39,6 @@ class Model2: Model {
         headerTopView.backgroundColor = UIColor.init(netHex: 0x4F5151)
         headerTopView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 20)
         self.view.addSubview(headerTopView)
-        
         
         footerView.backgroundColor = UIColor.init(netHex: 0xE6E6E6)
         footerView.frame = CGRect(x: 0, y: self.view.frame.height-50, width: self.view.frame.width, height: 50)
@@ -96,6 +104,18 @@ class Model2: Model {
     
     func buttonListGroup(sender: UIButton!) {
         displayListGroup(fromTop: 70)
+    }
+    
+    func showNoConnection(){
+        labelNoConnection.frame = CGRect(x: 0, y: 30, width: self.view.frame.width, height: 40)
+        UIView.animate(withDuration: 0.5, animations: {
+            self.labelNoConnection.frame = CGRect(x: 0, y: 70, width: self.view.frame.width, height: 40)
+            self.labelNoConnection.alpha = 1
+        }, completion : { finish in
+            UIView.animate(withDuration: 1, delay: 2, options: .curveEaseInOut, animations: {
+                self.labelNoConnection.alpha = 0
+            }, completion: nil)
+        })
     }
     
     

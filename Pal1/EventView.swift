@@ -78,3 +78,25 @@ class EventViewMonth: UIView {
     
 }
 
+class EventViewYear: UIView {
+    
+    let rectangle = UIView()
+    let trait = UIView()
+    
+    let couleur = UIColor.init(red: 213, green: 221, blue: 246)
+    
+    override func draw(_ rect: CGRect) {
+        
+        rectangle.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: self.frame.height/3)
+        rectangle.cornerRadius = self.frame.height/6
+        rectangle.backgroundColor = couleur
+        
+        trait.frame = CGRect(x: 0, y: self.frame.height/6, width: 2, height: 5*self.frame.height/6)
+        trait.backgroundColor = couleur
+        
+        self.addSubview(trait)
+        self.addSubview(rectangle)
+    }
+    
+}
+

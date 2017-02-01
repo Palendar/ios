@@ -20,8 +20,10 @@ class User: Model2{
     var nbGroupFav:Int = 3
     var groupFav:[String] = ["Basket", "Garden", "ECE"]
     
+    var uneSeulefois:Bool = true
+    
     override func viewDidLoad() {
-        
+        Constante.set(false, forKey: "comeFromAdd")
         buttonToHome.alpha = 0
         
         super.viewDidLoad()
@@ -41,22 +43,8 @@ class User: Model2{
             }
         }
         
-        /*Alamofire.request("http://vinci.aero/palendar/php/test.php").responseJSON {
-            response in
-            switch response.result {
-            case .success(let value):
-                let json = JSON(value)
-                
-                for (key, subJson) in json{
-                    let id = subJson["id"]
-                    let pass = subJson["pass"]
-                    let pseudo = String(describing: subJson["pseudo"])
-                  }
-           case .failure(let error):
-                print(error)
-            }
-        }
         
+        /*
         let parameters: Parameters = ["search": "n"]
         Alamofire.request("http://vinci.aero/palendar/php/search.php", method: .post, parameters: parameters, encoding: URLEncoding.httpBody).responseJSON {
             response in
@@ -76,6 +64,29 @@ class User: Model2{
         
         
     }
+    
+    /*override func viewDidAppear(_ animated: Bool) {
+        Alamofire.request("http://vinci.aero/palendar/php/test.php").responseJSON {
+            response in
+            switch response.result {
+            case .success(let value):
+                let json = JSON(value)
+                for (key, subJson) in json{
+                    let id = subJson["id"]
+                    let pass = subJson["pass"]
+                    let pseudo = String(describing: subJson["pseudo"])
+                }
+            case .failure(let error):
+                print(error)
+                print("ERROR")
+                if self.uneSeulefois{
+                    self.showNoConnection()
+                    self.uneSeulefois = false
+                }
+                
+            }
+        }
+    }*/
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
