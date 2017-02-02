@@ -70,6 +70,7 @@ class ViewController: UIViewController {
                     }
                 case .failure(let error):
                     print(error)
+                    self.performSegue(withIdentifier: "toUSERLOGIN", sender: self)
                 }
             }
             

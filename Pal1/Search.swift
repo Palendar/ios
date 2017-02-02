@@ -54,6 +54,7 @@ class Search: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
 
     @IBAction func groupAction(_ sender: Any) {
+        dataToUse = exempleData
         peopleSearch = false
         peopleButton.setTitleColor(UIColor.black, for: .normal)
         dataToUse = exempleData
@@ -61,10 +62,12 @@ class Search: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     @IBAction func peopleAction(_ sender: Any) {
+        dataToUse = exempleData2
         peopleSearch = true
         groupbutton.titleLabel?.textColor = UIColor.black
         peopleButton.setTitleColor(UIColor.init(netHex: 0x0080FF), for: .normal)
-        getFriendsList()
+        //getFriendsList()
+        tableView.reloadData()
     }
     @IBAction func endSearchEdit(_ sender: Any) {
         view.endEditing(true)

@@ -218,7 +218,7 @@ class CalendarGroupView: UIViewController, UIScrollViewDelegate {
         
         newEventCircle.backgroundColor = UIColor(red: 68, green: 68, blue: 68)
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
-        longPress.minimumPressDuration = 0.1
+        longPress.minimumPressDuration = 0.3
         viewCal.addGestureRecognizer(longPress)
     }
     
